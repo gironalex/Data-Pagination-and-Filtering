@@ -77,7 +77,6 @@ function addPagination( list ) {
    // Selecting the 1st pagination button & giving it a class name.
    document.querySelector('li > button').className = 'active';
    
-
    // Listening for clicks
    linkList.addEventListener('click', (e) => {
       if ( e.target.tagName === 'BUTTON' ) {
@@ -96,7 +95,7 @@ function addPagination( list ) {
 // ------------------------------------------- + Search Component --------------------------------------------
 
 // Referencing the header element and inserting a search input field.
-const searchHeader = document.querySelector('.header');
+const searchHeader = document.querySelector( '.header' );
 const searchBox = 
    `<label for="search" class="student-search">
    <span>Search by name</span>
@@ -104,7 +103,7 @@ const searchBox =
    <button id= "searchButton" type="button"><img src="img/icn-search.svg" alt="Search icon"></button>
    </label>`;
 
-searchHeader.insertAdjacentHTML('beforeend', searchBox);
+searchHeader.insertAdjacentHTML( 'beforeend', searchBox );
 
 // --- + Functionality to Search Component --- + Pagination for Search Results --- Handle No Search Matches --- 
 
@@ -116,12 +115,12 @@ searchHeader.insertAdjacentHTML('beforeend', searchBox);
   @return {[array]} matchList - array with the matched students typed in the search bar.
 ***/
 
-function searchMatches (searchInput, list) {
+function searchMatches ( searchInput, list ) {
    let matchedList = [];
-   for (let i = 0; i < list.length; i++) {
+   for ( let i = 0; i < list.length; i++ ) {
       let studentNames = `${list[i].name.first} ${list[i].name.last}`.toLowerCase();
-      if (searchInput != 0 && studentNames.includes(searchInput)) {
-         matchedList.push(list[i]);
+      if (searchInput != 0 && studentNames.includes( searchInput )) {
+         matchedList.push( list[i] );
       }
    }
       return matchedList;
@@ -133,7 +132,7 @@ function searchMatches (searchInput, list) {
   @param1 {[array]} searchMatchesList - array with updated list of matched students
 ***/
 
-function searchStudentsPage(searchMatchesList) {
+function searchStudentsPage( searchMatchesList ) {
    // removing any students that have been previously displayed
    const studentList = document.querySelector( '.student-list' );
    studentList.innerHTML = '';
@@ -142,33 +141,45 @@ function searchStudentsPage(searchMatchesList) {
    const linkList = document.querySelector( '.link-list' );
    linkList.innerHTML = '';
 
-   if (searchMatchesList.length === 0) {
+   if ( searchMatchesList.length === 0 ) {
       studentList.innerHTML = '<h1>No results found</h1>'; 
    } else {
-      showPage(searchMatchesList, 1);
-      addPagination(searchMatchesList);
+      showPage( searchMatchesList, 1 );
+      addPagination( searchMatchesList );
       }
    }
 
 // --------------------------------------- Submit + Keypup Listeners ------------------------------------------
 
 // Variables to reference the input and search button elements
-const searchBar = document.querySelector('input');
-const searchButton = document.querySelector('#searchButton');
+const searchBar = document.querySelector( 'input' );
+const searchButton = document.querySelector( '#searchButton' );
 
 // submit listener 
 searchButton.addEventListener('click', (e) => {
    e.preventDefault();
    const searchInput = searchBar.value.toLowerCase();
    searchStudentsPage(searchMatches(searchInput, data));
+
+   // Resetting the displayed students if the search bar is an empty string 
+   if (searchInput == '') {
+      showPage( data, 1 );
+      addPagination( data );
+   }
  });
  
  // keyup listener 
  searchBar.addEventListener('keyup', (e) => {
    const searchInput = e.target.value.toLowerCase();
    searchStudentsPage(searchMatches(searchInput, data));
+   
+   // Resetting the displayed students if the search bar is an empty string 
+   if (searchInput == '') {
+      showPage( data, 1 );
+      addPagination( data );
+   }
  });
 
 // ------------------------------------------- Calling Functions ---------------------------------------------
-showPage(data, 1);
-addPagination(data);
+showPage( data, 1 );
+addPagination( data );
